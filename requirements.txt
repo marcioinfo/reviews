@@ -1,0 +1,4 @@
+Django==1.11.17
+django-rest-swagger==2.1.2
+djangorestframework==3.6.3
+PyJWT==1.5.2
