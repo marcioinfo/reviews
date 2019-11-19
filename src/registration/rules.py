@@ -9,38 +9,11 @@ from commons.exceptions import InvalidEmailException, InvalidPasswordException, 
 class RegistrationRules:
 
     def __init__(self, email='', password='', name=''):
-        self._name = name
-        self._email = email
-        self._length = 6
-        self._password = password
+        self.name = name
+        self.email = email
+        self.length = 6
+        self.password = password
 
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-
-    @property
-    def email(self):
-        return self._email
-
-    @email.setter
-    def email(self, value):
-        self._email = value
-
-    @property
-    def password(self):
-        return self._password
-
-    @password.setter
-    def password(self, value):
-        self._password = value
-
-    @property
-    def length(self):
-        return self._length
 
     @staticmethod
     def _is_null(parameter):
@@ -57,7 +30,7 @@ class RegistrationRules:
         Dashes(-) or underscores(_).
         """
 
-        return not match(r'^[A-Za-z0-9_-]*$', self._password)
+        return not match(r'^[A-Za-z0-9_-]*$', self.password)
 
     def _email_invalid_string(self):
         """ Check if the e-mail matches a valid common email style:
@@ -74,7 +47,7 @@ class RegistrationRules:
         """
 
         pattern = r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)'
-        return not match(pattern, self._email)
+        return not match(pattern, self.email)
 
     def _not_unique_email(self):
         """ Make a query that checks if the email has already been taken
@@ -82,8 +55,8 @@ class RegistrationRules:
         """
         _filter = User.objects.filter
 
-        return (_filter(email=self._email).exists() or
-                _filter(username=self._email).exists())
+        return (_filter(email=self.email).exists() or
+                _filter(username=self.email).exists())
 
     def validate(self):
         """validate if the input is a valid request or not.
@@ -92,20 +65,20 @@ class RegistrationRules:
         :raises InvalidPasswordException: When Password failed one or more tests.
         :returns: True if passed all tests, raises an exception otherwise.
         """
-        if self._is_null(self._name):
+        if self._is_null(self.name):
             raise InvalidNameException('The name can not be empty.')
 
-        if self._smaller_than(self._name, 3):
+        if self._smaller_than(self.name, 3):
             raise InvalidNameException('The name should have at '
                                        'least 3 characters.')
 
-        if self._is_null(self._email):
+        if self._is_null(self.email):
             raise InvalidEmailException('The E-mail can not be empty.')
 
-        if self._is_null(self._password):
+        if self._is_null(self.password):
             raise InvalidPasswordException('The password can not be empty.')
 
-        if self._smaller_than(self._password, 6):
+        if self._smaller_than(self.password, 6):
             raise InvalidPasswordException('The password should have at least'
                                            ' 6 characters.')
 

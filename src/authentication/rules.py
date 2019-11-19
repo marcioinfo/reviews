@@ -10,7 +10,9 @@ from jwt import decode
 from jwt.exceptions import InvalidIssuedAtError
 
 # PROJECT IMPORT
-from .models import Blacklist
+#from .models import Blacklist
+
+from models.models import Blacklist
 
 from commons.exceptions import InvalidCredentialsException, \
     InvalidTokenException, InvalidEmailException, InvalidPayloadException
@@ -30,34 +32,11 @@ class AuthenticationRules:
         :parameter password: String
         :parameter token: String or Binary
         """
-        self._username = username
-        self._password = password
-        self._token = token
-        self._email = username
+        self.username = username
+        self.password = password
+        self.token = token
+        self.email = username
 
-    @property
-    def username(self):
-        return self._username
-
-    @username.setter
-    def username(self, value):
-        self._username = value
-
-    @property
-    def password(self):
-        return self._password
-
-    @password.setter
-    def password(self, value):
-        self._password = value
-
-    @property
-    def token(self):
-        return self._token
-
-    @token.setter
-    def token(self, value):
-        self._token = value
 
     @staticmethod
     def _check_if_user_exists(user):
@@ -67,8 +46,8 @@ class AuthenticationRules:
 
     def _check_if_password_matches(self):
 
-        user = User.objects.get(username=self._username)
-        if not user.check_password(self._password):
+        user = User.objects.get(username=self.username)
+        if not user.check_password(self.password):
             raise InvalidCredentialsException('Invalid Credentials.')
 
     def validate_credentials(self, check_password=True):
@@ -76,7 +55,7 @@ class AuthenticationRules:
 
         """
 
-        self._check_if_user_exists(user=self._username)
+        self._check_if_user_exists(user=self.username)
 
         # Set a option to check the password if necessary.
         if check_password:
@@ -109,7 +88,7 @@ class AuthenticationRules:
 
     def _check_blacklist_token(self):
 
-        if Blacklist.objects.filter(token=self._token).exists():
+        if Blacklist.objects.filter(token=self.token).exists():
             raise InvalidTokenException('Token was killed')
         else:
             return None
@@ -143,7 +122,7 @@ class AuthenticationRules:
 
         :returns True if passed the test.
         """
-        decoded = decode(self._token, TOKEN_SECRET,
+        decoded = decode(self.token, TOKEN_SECRET,
                          algorithms=[TOKEN_ALGORITHM])
 
         self._check_future_token(decoded)
@@ -155,7 +134,7 @@ class AuthenticationRules:
 
     def email_exist(self):
 
-        if not User.objects.filter(email=self._email).exists():
+        if not User.objects.filter(email=self.email).exists():
             raise InvalidEmailException("There is no user with "
                                         "the e-mail selected.")
         return True

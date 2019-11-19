@@ -36,43 +36,11 @@ class AuthenticationServices:
         :parameter password: String
         :parameter token: String or Binary
         """
-        self._username = username
-        self._password = password
-        self._new_password = new_password
-        self._token = token
-        self._name = name
-
-    @property
-    def username(self):
-        return self._username
-
-    @username.setter
-    def username(self, value):
-        self._username = value
-
-    @property
-    def password(self):
-        return self._password
-
-    @password.setter
-    def password(self, value):
-        self._password = value
-
-    @property
-    def new_password(self):
-        return self._new_password
-
-    @new_password.setter
-    def new_password(self, value):
-        self._new_password = value
-
-    @property
-    def token(self):
-        return self._token
-
-    @token.setter
-    def token(self, value):
-        self._token = value
+        self.username = username
+        self.password = password
+        self.new_password = new_password
+        self.token = token
+        self.name = name
 
     def validate_credentials(self, check_password=True):
         """ Check if Credentials are valid.
@@ -85,8 +53,8 @@ class AuthenticationServices:
         :returns True if input ok.
         """
         AuthenticationRules(
-            username=self._username,
-            password=self._password
+            username=self.username,
+            password=self.password
         ).validate_credentials(
             check_password=check_password
         )
@@ -120,7 +88,7 @@ class AuthenticationServices:
         :returns the same token if it's valid token.
         """
 
-        AuthenticationRules(token=self._token).validate_token()
+        AuthenticationRules(token=self.token).validate_token()
 
         return True
 
@@ -142,11 +110,11 @@ class AuthenticationServices:
         3 - Get an expiration time based on the settings.
         4 - Wrap this info on a token and return it.
         """
-        name = User.objects.get(username=self._username).profile.name
+        name = User.objects.get(username=self.username).profile.name
 
         payload = {
-                   'email': self._username,
-                   'username': self._username,
+                   'email': self.username,
+                   'username': self.username,
                    'name': name,
                    'iat': timezone.now(),
                    'exp': timezone.now() + timedelta(seconds=living_time)
@@ -162,9 +130,9 @@ class AuthenticationServices:
         """
 
         # Validates prior decoding.
-        AuthenticationRules(token=self._token).validate_token()
+        AuthenticationRules(token=self.token).validate_token()
 
-        payload = decode(self._token,
+        payload = decode(self.token,
                          TOKEN_SECRET,
                          algorithms=[TOKEN_ALGORITHM])
 
@@ -178,13 +146,13 @@ class AuthenticationServices:
         3 - get the expiration time
         4 - send token to the blacklist
         """
-        AuthenticationRules(token=self._token).validate_token()
+        AuthenticationRules(token=self.token).validate_token()
 
         payload = self.decode_token()
 
         exp = timezone.make_aware(datetime.fromtimestamp(int(payload['exp'])))
 
-        dead_token = Blacklist(token=self._token, expiration=exp)
+        dead_token = Blacklist(token=self.token, expiration=exp)
 
         dead_token.save()
 
@@ -196,7 +164,7 @@ class AuthenticationServices:
         """ Get Username From Token
         """
 
-        auth_rules = AuthenticationRules(token=self._token)
+        auth_rules = AuthenticationRules(token=self.token)
 
         auth_rules.validate_token()
 
