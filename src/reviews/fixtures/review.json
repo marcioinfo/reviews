@@ -1,0 +1,41 @@
+[
+  {
+    "model": "reviews.review",
+    "pk": 1,
+    "fields": {
+      "rating": 5,
+      "title": "I loved it",
+      "summary": "A very good Company",
+      "ip_address": "127.0.0.1",
+      "submission_date": "2017-08-23T23:28:14.506Z",
+      "company_name": "BlurryMind",
+      "reviewer": 1
+    }
+  },
+  {
+    "model": "reviews.review",
+    "pk": 2,
+    "fields": {
+      "rating": 5,
+      "title": "I will use more, for sure!",
+      "summary": "Awesome Company! I was very well treated.",
+      "ip_address": "127.0.0.1",
+      "submission_date": "2017-08-23T23:28:58.873Z",
+      "company_name": "CustumerAffairs",
+      "reviewer": 1
+    }
+  },
+  {
+    "model": "reviews.review",
+    "pk": 3,
+    "fields": {
+      "rating": 4,
+      "title": "Very Nice",
+      "summary": "Very good, but could be better...",
+      "ip_address": "127.0.0.1",
+      "submission_date": "2017-08-23T23:29:33.073Z",
+      "company_name": "Google",
+      "reviewer": 1
+    }
+  }
+]

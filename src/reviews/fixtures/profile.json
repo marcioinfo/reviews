@@ -1,0 +1,12 @@
+[
+  {
+    "model": "registration.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "name": "Marcelo",
+      "created": "2017-08-23T23:26:40.949Z",
+      "last_modified": "2017-08-23T23:26:40.949Z"
+    }
+  }
+]
