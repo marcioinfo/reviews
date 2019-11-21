@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 # PROJECT IMPORTS
 
-
+'''
 
 
 class BlacklistManager(models.Manager):
@@ -36,3 +36,4 @@ class Blacklist(models.Model):
 
     class Meta:
         db_table = 'blacklist'
+'''

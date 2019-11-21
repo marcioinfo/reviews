@@ -1,3 +1,4 @@
+'''
 # DJANGO LIBRARIES IMPORT
 from django.utils import timezone
 from django.dispatch import receiver
@@ -28,3 +29,4 @@ def create_user_profile(sender, instance, created, **kwargs):
         profile = Profile.objects.get(user=instance)
         profile.last_modified = timezone.now()
         profile.save()
+'''

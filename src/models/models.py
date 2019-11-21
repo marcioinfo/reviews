@@ -24,6 +24,11 @@ from django.contrib.auth.models import User
 
 
 
+from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+
+
 class BlacklistManager(models.Manager):
     """ Blacklist Manager
 
@@ -102,3 +107,30 @@ def create_user_profile(sender, instance, created, **kwargs):
         profile = Profile.objects.get(user=instance)
         profile.last_modified = timezone.now()
         profile.save()
+
+
+
+class Review(models.Model):
+
+    rating = models.IntegerField(validators=[MaxValueValidator(5),
+                                             MinValueValidator(1)])
+
+    title = models.CharField(max_length=64)
+
+    summary = models.CharField(max_length=10000)
+
+    # max length based on IPv4-mapped IPv6 (45 chars):
+    # ABCD:ABCD:ABCD:ABCD:ABCD:ABCD:XXX.XXX.XXX.XXX
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+
+    submission_date = models.DateTimeField(auto_now_add=True,
+                                           blank=True,
+                                           null=True)
+
+    company_name = models.CharField(max_length=100)
+
+    reviewer = models.ForeignKey('registration.Profile',
+                                 on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'review'

@@ -1,3 +1,4 @@
+'''
 # DJANGO LIBRARIES IMPORT
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -16,3 +17,4 @@ def update_blacklist(sender, **kwargs):
                 in order to avoid extra data in the table.
     """
     Blacklist.objects.erase_expired_tokens()
+'''

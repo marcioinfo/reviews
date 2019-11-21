@@ -2,8 +2,8 @@
 from rest_framework import serializers
 
 # PROJECT LIBRARIES
-from reviews.models import Review
-
+#from reviews.models import Review
+from models.models import Review
 
 class ReviewSerializer(serializers.ModelSerializer):
 
